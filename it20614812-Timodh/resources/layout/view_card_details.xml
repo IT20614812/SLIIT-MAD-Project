@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewCardDetails">
+
+    <Button
+        android:id="@+id/viewCardEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/edit_card_details"
+        app:layout_constraintStart_toStartOf="@+id/viewCardType"
+        app:layout_constraintTop_toBottomOf="@+id/viewCardType" />
+
+    <Button
+        android:id="@+id/viewCardRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="128dp"
+        android:layout_marginLeft="128dp"
+        android:text="@string/remove_card_details"
+        app:layout_constraintStart_toEndOf="@+id/viewCardEdit"
+        app:layout_constraintTop_toTopOf="@+id/viewCardEdit" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="#082B47"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/card_holder_details"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar3" />
+
+    <TextView
+        android:id="@+id/viewCardNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="@string/card_number"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.096"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/viewFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/first_name"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/viewCardNumber"
+        app:layout_constraintTop_toBottomOf="@+id/viewCardNumber" />
+
+    <TextView
+        android:id="@+id/viewLastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/last_name"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/viewFirstName"
+        app:layout_constraintTop_toBottomOf="@+id/viewFirstName" />
+
+    <TextView
+        android:id="@+id/viewCardType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/card_type"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/viewLastName"
+        app:layout_constraintTop_toBottomOf="@+id/viewLastName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
