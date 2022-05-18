@@ -1,50 +1,8 @@
 <resources>
     <string name="app_name">BookNowApp</string>
 
-    <string name="theaters">Select Theater :</string>
-    <string name="time">Select Time :</string>
-    <string name="ticket">Tickets Amount :</string>
-    <string name="movie">Select Movie :</string>
 
-    <string-array name="array_theater">
-        <item>Liberty By Scope Cinemas: Colombo</item>
-        <item>PVR Cinema: LUXE One Galle Face Mall</item>
-        <item>Scope Cinemas Dolby Atmos: CC</item>
-        <item>Scope Cinemas Gold Class: CCC</item>
-        <item>Savoy 3D Cinema: Wellawatta</item>
-        <item>Scope Cinemas: Colombo City Center</item>
-        <item>Sky Lite 3D: Matara</item>
-        <item>Vista Lite: Ja Ela</item>
-    </string-array>
-
-    <string-array name="array_time">
-        <item>10:30 AM</item>
-        <item>04:15 PM</item>
-        <item>01:00 PM</item>
-        <item>03:30 PM</item>
-        <item>07:00 PM</item>
-        <item>10:00 PM</item>
-    </string-array>
-
-    <string-array name="array_ticket">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-    </string-array>
-
-    <string-array name="array_movie">
-        <item>The Batman 2022</item>
-        <item>Ambulance 2022</item>
-        <item>Morbius 2022</item>
-        <item>Uncharted 2022</item>
-    </string-array>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

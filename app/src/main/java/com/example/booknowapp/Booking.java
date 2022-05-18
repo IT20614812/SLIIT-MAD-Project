@@ -1,169 +1,140 @@
 package com.example.booknowapp;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-public class Booking extends AppCompatActivity {
-
-    private String selectTheater, selectTime, selectTickets, selectMovie;
-    private TextView tvTheater, tvTime, tvTickets, tvMovie;
-
-    private Spinner theaterSpinner, timeSpinner, ticketsSpinner, movieSpinner;
-    private ArrayAdapter<CharSequence> theaterAdapter, timeAdapter, ticketsAdapter, movieAdapter;
+public class Booking extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
 
-    private Button btnsave;
-    DatabaseReference databaseReference;
-    
+    TextView selectedTheater, selectedMovie, selectedTime, selectedTicket;
+    private Spinner theaterSpinner, movieSpinner, timeSpinner, ticketSpinner;
+
+    Button bookbtn;
+    FirebaseDatabase database;
+    DatabaseReference reference;
+    User user;
+    int maxid = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_booking);
 
-        iniDatePicker();
-        dateButton = findViewById(R.id.datePickerButton);
-        dateButton.setText(getTodayDate());
+        bookbtn = findViewById(R.id.bookbtn);
+        user = new User();
+        reference = database.getInstance().getReference().child("movies");
 
-        //State spinner initialisation
-        theaterSpinner = findViewById(R.id.spinner_theater);
-        timeSpinner = findViewById(R.id.spinner_time);
-        ticketsSpinner = findViewById(R.id.spinner_ticket);
-        movieSpinner = findViewById(R.id.spinner_movie);
+        selectedTheater = findViewById(R.id.selectedTheater);
+        selectedMovie = findViewById(R.id.selectedMovie);
+        selectedTime = findViewById(R.id.selectedTime);
+        selectedTicket = findViewById(R.id.selectedTicket);
 
-        //populate
-        theaterAdapter = ArrayAdapter.createFromResource(this, R.array.array_theater, R.layout.spinner_layout);
-        timeAdapter = ArrayAdapter.createFromResource(this, R.array.array_time, R.layout.spinner_layout);
-        ticketsAdapter = ArrayAdapter.createFromResource(this, R.array.array_ticket, R.layout.spinner_layout);
-        movieAdapter = ArrayAdapter.createFromResource(this, R.array.array_movie, R.layout.spinner_layout);
+        theaterSpinner = findViewById(R.id.theaterSpinner);
+        movieSpinner = findViewById(R.id.movieSpinner);
+        timeSpinner = findViewById(R.id.timeSpinner);
+        ticketSpinner = findViewById(R.id.ticketSpinner);
 
-        //specify
-        theaterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ticketsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        movieAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        List<String> Categories = new ArrayList<>();
+        Categories.add(0, "Choose Theater");
+        Categories.add("Liberty By Scope Cinemas: Colombo");
+        Categories.add("PVR Cinema: LUXE One Galle Face Mall");
+        Categories.add("Scope Cinemas Dolby Atmos: CC");
+        Categories.add("Scope Cinemas Gold Class: CCC");
+        Categories.add("Savoy 3D Cinema: Wellawatta");
+        Categories.add("Scope Cinemas: Colombo City Center");
 
-        //set adapter
-        theaterSpinner.setAdapter(theaterAdapter);
-        timeSpinner.setAdapter(timeAdapter);
-        ticketsSpinner.setAdapter(ticketsAdapter);
-        movieSpinner.setAdapter(movieAdapter);
+        ArrayAdapter<String> dataAdapter;
+        dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Categories);
 
-        btnsave = (Button) findViewById(R.id.button3);
-        databaseReference = FirebaseDatabase.getInstance().getReference("MovieTicket");
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        btnsave.setOnClickListener(new View.OnClickListener() {
+        theaterSpinner.setAdapter(dataAdapter);
+
+        theaterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (adapterView.getItemAtPosition(i).equals("Choose Theater")) {
 
-                String movie = movieSpinner.getSelectedItem().toString();
-                String theater = theaterSpinner.getSelectedItem().toString();
-                String time = timeSpinner.getSelectedItem().toString();
-                String amount = ticketsSpinner.getSelectedItem().toString();
+                } else {
+                    selectedTheater.setText(adapterView.getSelectedItem().toString());
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-                Tickets helperClass = new Tickets(movie, theater, time, amount);
-
-                databaseReference.setValue(helperClass);
             }
         });
 
-    }
-
-
-    private String getTodayDate() {
-
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        month = month + 1;
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return makeDateString(day, month, year);
-    }
-
-    private void iniDatePicker() {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day)
-            {
-                month = month + 1;
-                String date = makeDateString(day, month, year);
-                dateButton.setText(date);
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+
+                if(datasnapshot.exists()) {
+                    maxid = (int) datasnapshot.getChildrenCount();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        };
+        });
+            bookbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
+                    user.setTheater(theaterSpinner.getSelectedItem().toString());
+                    Toast.makeText(Booking.this,"Ticket Bokked", Toast.LENGTH_LONG).show();
 
-        int style = AlertDialog.THEME_HOLO_LIGHT;
+                    reference.child(String.valueOf(maxid+1)).setValue(user);
 
-        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
-        //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                }
+            });
     }
 
-    private String makeDateString(int day, int month, int year) {
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-        return getMonthFormat(month) + " " + day + " " + year;
+
     }
 
-    private String getMonthFormat(int month) {
-        if (month == 1)
-            return "JAN";
-        if (month == 2)
-            return "FEB";
-        if (month == 3)
-            return "MAR";
-        if (month == 4)
-            return "APR";
-        if (month == 5)
-            return "MAY";
-        if (month == 6)
-            return "JUN";
-        if (month == 7)
-            return "JUL";
-        if (month == 8)
-            return "AUG";
-        if (month == 9)
-            return "SEP";
-        if (month == 10)
-            return "PCT";
-        if (month == 11)
-            return "NOC";
-        if (month == 12)
-            return "DEC";
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
-        return "JAN";
+
     }
-
-    public void openDatePicker(View view) {
-
-        datePickerDialog.show();
-
-        }
-    }
+}

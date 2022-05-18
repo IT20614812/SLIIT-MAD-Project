@@ -9,18 +9,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Dashboard extends AppCompatActivity {
-
-    private ImageSlider imageSlider;
+public class UserAccount extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,25 +26,51 @@ public class Dashboard extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_user_account);
+
+        ListView listView = findViewById(R.id.listView);
+        List<String> list = new ArrayList<>();
+        list.add("Booked Movies");
+        list.add("Booked Events");
+        list.add("Manage Payments");
+        list.add("Settings");
+        list.add("Privacy Policy");
+        list.add("Customer Support");
+        list.add("Log Out");
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
+        listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               if(position==0){
+                   //clicked
+
+                   startActivity(new Intent(UserAccount.this,BookedMovies.class));
+               }else if(position==1){
+                   //clicked
+               }else {}
+            }
+        });
 
         //Initialize and assign varible
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         //set Home
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setSelectedItemId(R.id.profile);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
-                    case R.id.profile:
+                    case R.id.home:
                         startActivity(new Intent(getApplicationContext()
-                        ,UserAccount.class));
+                                ,Dashboard.class));
                         overridePendingTransition(0,0);
                         return true;
 
-                    case R.id.home:
+                    case R.id.profile:
                         return true;
 
                     case R.id.movies:
@@ -54,32 +78,10 @@ public class Dashboard extends AppCompatActivity {
                                 ,SelectedMovie.class));
                         overridePendingTransition(0,0);
                         return true;
+
                 }
                 return false;
             }
         });
-
-        imageSlider = findViewById(R.id.imageSlider);
-
-        ArrayList<SlideModel> slideModels = new ArrayList<>();
-
-        slideModels.add(new SlideModel("https://www.youthjournalism.org/cms/assets/uploads/2022/03/Movie-FB-cover-The-Batman.png", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://www.fortressofsolitude.co.za/wp-content/uploads/2022/03/MRBS-1920x1080-1-750x375.jpg", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://in.bmscdn.com/iedb/movies/images/mobile/listing/xxlarge/ambulance-et00322252-18-02-2022-03-51-54.jpg", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://www.showcasecinemas.co.uk/media/5369/278176839_955907231674705_1948836435515095432_n.jpg", ScaleTypes.FIT));
-
-        imageSlider.setImageList(slideModels, ScaleTypes.FIT);
-
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent=new Intent(Dashboard.this,SelectedMovie.class);
-                startActivity(intent);
-            }
-        });
-
-
     }
 }
