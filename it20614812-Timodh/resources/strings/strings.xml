@@ -1,0 +1,67 @@
+<resources>
+
+    //Strings for Add Card Screen and Card Details
+    <string name="app_name">My Application</string>
+    <string name="enter_card_details">Enter Card Details</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="card_type">Card Type</string>
+    <string name="expiration_month_and_year">Expiration Month and Year</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="edit_card_details">Edit</string>
+    <string name="remove_card_details">Remove</string>
+    <string name="save_card_details">Save</string>
+
+    //Strings for View Cards Screen
+    <string name="manage_card">Manage Cards</string>
+    <string name="card_holder">Card Holder 1</string>
+    <string name="add_card">addCard</string>
+    <string name="card_holder_details">Card Holder Details</string>
+
+    //Strings for Login Screen
+    <string name="sign_up">Sign Up</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="privacy_policy">Privacy Policy Agreement</string>
+    <string name="existing_account">Already have an account?</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="login">Login</string>
+
+    //Items for select month array
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    //items for select year array
+    <string-array name="years">
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+    </string-array>
+
+    //items for select card type array
+    <string-array name="card_type">
+        <item>Paypal</item>
+        <item>Master</item>
+        <item>Visa</item>
+    </string-array>
+
+    <string name="title_activity_main2">View Card Details</string>
+
+</resources>
